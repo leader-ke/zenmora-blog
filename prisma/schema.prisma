@@ -1,0 +1,74 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Category {
+  id          String   @id @default(cuid())
+  name        String
+  slug        String   @unique
+  description String?
+  heroLabel   String?
+  posts       Post[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Post {
+  id             String    @id @default(cuid())
+  title          String
+  slug           String    @unique
+  excerpt        String
+  content        String
+  status         PostStatus @default(DRAFT)
+  featured       Boolean   @default(false)
+  latest         Boolean   @default(false)
+  heroImage      String
+  heroAlt        String
+  roomSort       Int       @default(0)
+  publishedAt    DateTime?
+  categoryId     String
+  category       Category  @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+}
+
+model SiteContent {
+  id                    Int      @id @default(1)
+  siteTitle             String   @default("Zenmora Co.")
+  siteTagline           String   @default("Creating calm, beautiful spaces")
+  heroTitle             String   @default("Zenmora Co.")
+  heroSubtitle          String   @default("Creating calm, beautiful spaces")
+  heroCtaLabel          String   @default("Explore Ideas")
+  heroCtaHref           String   @default("/blog")
+  heroImage             String   @default("/images/hero-room.svg")
+  heroImageAlt          String   @default("Soft neutral living room")
+  trendingTitle         String   @default("Trending Now")
+  trendingBody          String   @default("At Zenmora Co., we believe your home should feel as beautiful as it looks. We share modern, cozy, and budget-friendly ideas to help you create a space you truly love.")
+  trendingCtaLabel      String   @default("Read More")
+  trendingCtaHref       String   @default("/blog")
+  trendingImage         String   @default("/images/trending-room.svg")
+  newsletterTitle       String   @default("Join Zenmora Co.")
+  newsletterBody        String   @default("Get weekly home inspiration and decor ideas.")
+  newsletterPlaceholder String   @default("Enter your email")
+  newsletterButtonLabel String   @default("Subscribe")
+  newsletterSuccess     String   @default("Thanks for subscribing.")
+  footerNote            String   @default("Calm interiors, thoughtful living.")
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+}
+
+model Subscriber {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  createdAt DateTime @default(now())
+}
+
+enum PostStatus {
+  DRAFT
+  PUBLISHED
+}
