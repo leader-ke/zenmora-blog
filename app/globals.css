@@ -665,6 +665,10 @@ textarea {
   padding: 18px;
 }
 
+.admin-row--subscribers {
+  grid-template-columns: 1fr auto;
+}
+
 .admin-actions {
   display: flex;
   gap: 10px;

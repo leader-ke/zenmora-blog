@@ -186,11 +186,15 @@ export async function subscribeAction(formData: FormData) {
     redirect("/?subscribed=invalid");
   }
 
+  const existing = await prisma.subscriber.findUnique({
+    where: { email }
+  });
+
   await prisma.subscriber.upsert({
     where: { email },
     update: {},
     create: { email }
   });
 
-  redirect("/?subscribed=1");
+  redirect(existing ? "/?subscribed=exists" : "/?subscribed=1");
 }

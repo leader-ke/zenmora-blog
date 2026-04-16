@@ -132,6 +132,7 @@ export default async function HomePage({
                 <h2>{siteContent.newsletterTitle}</h2>
                 <p>{siteContent.newsletterBody}</p>
                 {subscribed === "1" ? <div className="status-note">{siteContent.newsletterSuccess}</div> : null}
+                {subscribed === "exists" ? <div className="status-note">That email is already subscribed.</div> : null}
                 {subscribed === "invalid" ? <div className="status-note">Enter a valid email address.</div> : null}
               </div>
               <form action={subscribeAction}>

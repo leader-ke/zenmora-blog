@@ -45,6 +45,9 @@ export default async function AdminOverviewPage() {
             <Link href="/admin/categories" className="secondary-button">
               Manage categories
             </Link>
+            <Link href="/admin/subscribers" className="secondary-button">
+              View subscribers
+            </Link>
           </div>
         </div>
         <div className="admin-card">

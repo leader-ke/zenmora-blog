@@ -10,7 +10,8 @@ const links = [
   { href: "/admin", label: "Overview" },
   { href: "/admin/posts", label: "Posts" },
   { href: "/admin/categories", label: "Categories" },
-  { href: "/admin/homepage", label: "Homepage" }
+  { href: "/admin/homepage", label: "Homepage" },
+  { href: "/admin/subscribers", label: "Subscribers" }
 ];
 
 export function AdminShell({ title, children }: AdminShellProps) {
