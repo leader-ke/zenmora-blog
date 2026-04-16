@@ -25,6 +25,16 @@ Editorial home decor blog built with Next.js, Prisma, and SQLite.
 - A Husky pre-commit hook runs `lint-staged` against staged TS/JS files.
 - GitHub Actions runs lint, typecheck, and build on pushes to `main` and on pull requests.
 
+## Analytics
+
+Umami tracking is supported via public environment variables.
+
+- `NEXT_PUBLIC_UMAMI_SCRIPT_URL`: your Umami tracker script URL, for example `https://cloud.umami.is/script.js`
+- `NEXT_PUBLIC_UMAMI_WEBSITE_ID`: the website ID for this site from your Umami dashboard
+- `NEXT_PUBLIC_UMAMI_DOMAINS`: optional comma-separated hostnames such as `zenmora.com,www.zenmora.com`
+
+If the script URL and website ID are set, the tracker is injected automatically through the app layout.
+
 ## Admin
 
 - Visit `/admin/login`
