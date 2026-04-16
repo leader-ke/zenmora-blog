@@ -51,6 +51,19 @@ export const getLatestPosts = cache(async () => {
   });
 });
 
+export const getShopItems = cache(async (options?: { take?: number; featuredOnly?: boolean }) => {
+  const { take, featuredOnly } = options ?? {};
+
+  return prisma.shopItem.findMany({
+    where: {
+      active: true,
+      ...(featuredOnly ? { featured: true } : {})
+    },
+    orderBy: [{ featured: "desc" }, { sortOrder: "asc" }, { createdAt: "asc" }],
+    ...(take ? { take } : {})
+  });
+});
+
 export const getPublishedPosts = cache(async (page = 1, pageSize = POSTS_PER_PAGE) => {
   const safePage = Math.max(page, 1);
   const where = { status: "PUBLISHED" as const };

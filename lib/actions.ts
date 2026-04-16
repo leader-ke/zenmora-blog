@@ -179,6 +179,54 @@ export async function deletePostAction(formData: FormData) {
   redirect("/admin/posts?deleted=1");
 }
 
+export async function saveShopItemAction(formData: FormData) {
+  await requireAdmin();
+  const id = getString(formData, "id");
+  const name = getString(formData, "name");
+  const slug = slugify(getString(formData, "slug") || name);
+
+  const payload = {
+    name,
+    slug,
+    price: getString(formData, "price"),
+    href: getString(formData, "href"),
+    retailer: getString(formData, "retailer") || null,
+    image: getString(formData, "image"),
+    imageAlt: getString(formData, "imageAlt"),
+    featured: getBoolean(formData, "featured"),
+    active: getBoolean(formData, "active"),
+    sortOrder: Number(getString(formData, "sortOrder") || "0")
+  };
+
+  if (id) {
+    await prisma.shopItem.update({
+      where: { id },
+      data: payload
+    });
+  } else {
+    await prisma.shopItem.create({
+      data: payload
+    });
+  }
+
+  revalidatePath("/");
+  revalidatePath("/shop");
+  revalidatePath("/admin");
+  revalidatePath("/admin/shop");
+  redirect("/admin/shop?saved=1");
+}
+
+export async function deleteShopItemAction(formData: FormData) {
+  await requireAdmin();
+  const id = getString(formData, "id");
+  await prisma.shopItem.delete({ where: { id } });
+  revalidatePath("/");
+  revalidatePath("/shop");
+  revalidatePath("/admin");
+  revalidatePath("/admin/shop");
+  redirect("/admin/shop?deleted=1");
+}
+
 export async function subscribeAction(formData: FormData) {
   const email = getString(formData, "email").toLowerCase();
 

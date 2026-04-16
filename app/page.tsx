@@ -3,26 +3,20 @@ import Link from "next/link";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { PostCard } from "@/components/post-card";
-import { getExploreCategories, getFeaturedPost, getLatestPosts, getSiteContent } from "@/lib/data";
+import { getExploreCategories, getFeaturedPost, getLatestPosts, getShopItems, getSiteContent } from "@/lib/data";
 import { subscribeAction } from "@/lib/actions";
-
-const shopItems = [
-  { name: "Stone Table Lamp", price: "$39", image: "/images/shop-lamp.svg" },
-  { name: "Textured Shade", price: "$139", image: "/images/shop-shade.svg" },
-  { name: "Framed Botanicals", price: "$40", image: "/images/shop-frames.svg" },
-  { name: "Wood Tray", price: "$26", image: "/images/shop-tray.svg" }
-];
 
 export default async function HomePage({
   searchParams
 }: {
   searchParams?: Promise<{ subscribed?: string }>;
 }) {
-  const [siteContent, categories, featuredPost, latestPosts, params] = await Promise.all([
+  const [siteContent, categories, featuredPost, latestPosts, shopItems, params] = await Promise.all([
     getSiteContent(),
     getExploreCategories(),
     getFeaturedPost(),
     getLatestPosts(),
+    getShopItems({ take: 4, featuredOnly: true }),
     searchParams
   ]);
 
@@ -108,13 +102,20 @@ export default async function HomePage({
           </div>
           <div className="shop-grid">
             {shopItems.map((item) => (
-              <div key={item.name} className="shop-card shop-card--compact">
+              <a
+                key={item.id}
+                href={item.href}
+                className="shop-card shop-card--compact"
+                target="_blank"
+                rel="noreferrer"
+              >
                 <div className="image-frame image-frame--small" style={{ backgroundImage: `url(${item.image})` }} />
                 <div className="shop-card__body">
                   <h3>{item.name}</h3>
                   <p>{item.price}</p>
+                  {item.retailer ? <div className="category-tile__meta">{item.retailer}</div> : null}
                 </div>
-              </div>
+              </a>
             ))}
           </div>
         </section>

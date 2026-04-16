@@ -112,7 +112,62 @@ async function main() {
     });
   }
 
-  console.log(`Seeded site content ${siteContent.siteTitle} with ${posts.length} posts.`);
+  const shopItems = [
+    {
+      name: "Stone Table Lamp",
+      slug: "stone-table-lamp",
+      price: "$39",
+      href: "https://example.com/products/stone-table-lamp",
+      retailer: "Zenmora Finds",
+      image: "/images/shop-lamp.svg",
+      imageAlt: "Stone table lamp",
+      featured: true,
+      sortOrder: 1
+    },
+    {
+      name: "Textured Shade",
+      slug: "textured-shade",
+      price: "$139",
+      href: "https://example.com/products/textured-shade",
+      retailer: "Zenmora Finds",
+      image: "/images/shop-shade.svg",
+      imageAlt: "Textured lamp shade",
+      featured: true,
+      sortOrder: 2
+    },
+    {
+      name: "Framed Botanicals",
+      slug: "framed-botanicals",
+      price: "$40",
+      href: "https://example.com/products/framed-botanicals",
+      retailer: "Zenmora Finds",
+      image: "/images/shop-frames.svg",
+      imageAlt: "Framed botanical wall art",
+      featured: true,
+      sortOrder: 3
+    },
+    {
+      name: "Wood Tray",
+      slug: "wood-tray",
+      price: "$26",
+      href: "https://example.com/products/wood-tray",
+      retailer: "Zenmora Finds",
+      image: "/images/shop-tray.svg",
+      imageAlt: "Round wood tray",
+      featured: true,
+      sortOrder: 4
+    }
+  ];
+
+  for (const item of shopItems) {
+    await prisma.shopItem.upsert({
+      where: { slug: item.slug },
+      update: item,
+      create: item
+    });
+  }
+
+  console.log(`Seeded site content ${siteContent.siteTitle} with ${posts.length} posts and ${shopItems.length} shop items.`);
 }
 
 main()

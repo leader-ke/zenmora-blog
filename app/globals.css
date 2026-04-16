@@ -599,6 +599,10 @@ textarea {
   padding-top: 10px;
 }
 
+.shop-card {
+  display: block;
+}
+
 .shop-card__body h3 {
   font-size: 1.05rem;
 }
@@ -667,6 +671,11 @@ textarea {
 
 .admin-row--subscribers {
   grid-template-columns: 1fr auto;
+}
+
+.admin-row a.secondary-button,
+.admin-row button.secondary-button {
+  white-space: nowrap;
 }
 
 .admin-actions {
