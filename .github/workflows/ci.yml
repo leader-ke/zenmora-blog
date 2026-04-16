@@ -9,8 +9,23 @@ on:
 jobs:
   validate:
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_DB: zenmora
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U postgres -d zenmora"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
     env:
-      DATABASE_URL: file:./dev.db
+      DATABASE_URL: postgresql://postgres:postgres@127.0.0.1:5432/zenmora?schema=public
+      DIRECT_URL: postgresql://postgres:postgres@127.0.0.1:5432/zenmora?schema=public
       ADMIN_PASSWORD: ci-admin-password
       SESSION_SECRET: ci-session-secret
 
@@ -26,6 +41,17 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
+
+      - name: Wait for PostgreSQL
+        run: |
+          for i in {1..30}; do
+            if (echo > /dev/tcp/127.0.0.1/5432) >/dev/null 2>&1; then
+              exit 0
+            fi
+            sleep 1
+          done
+          echo "PostgreSQL did not become ready in time."
+          exit 1
 
       - name: Lint
         run: npm run lint
