@@ -11,6 +11,7 @@ export async function SiteFooter() {
         <p>{siteContent.footerNote}</p>
       </div>
       <div className="footer__links">
+        <Link href="/about">About</Link>
         <Link href="/privacy">Privacy</Link>
         <Link href="/terms">Terms</Link>
         <Link href="/admin/login">Admin</Link>

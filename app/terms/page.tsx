@@ -1,5 +1,11 @@
+import type { Metadata } from "next";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
+
+export const metadata: Metadata = {
+  title: "Terms",
+  description: "Read the Zenmora Co. terms and conditions."
+};
 
 export default function TermsPage() {
   return (

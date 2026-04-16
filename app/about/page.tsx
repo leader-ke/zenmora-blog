@@ -1,5 +1,11 @@
+import type { Metadata } from "next";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
+
+export const metadata: Metadata = {
+  title: "About",
+  description: "About Zenmora Co. and its warm, minimal approach to interiors and editorial home styling."
+};
 
 export default function AboutPage() {
   return (

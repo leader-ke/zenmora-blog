@@ -1,6 +1,12 @@
 import { cache } from "react";
 import { prisma } from "@/lib/prisma";
 
+export const POSTS_PER_PAGE = 6;
+
+const postCardInclude = {
+  category: true
+} as const;
+
 export const getSiteContent = cache(async () => {
   return prisma.siteContent.upsert({
     where: { id: 1 },
@@ -41,20 +47,31 @@ export const getLatestPosts = cache(async () => {
     where: { status: "PUBLISHED", latest: true },
     orderBy: [{ publishedAt: "desc" }],
     take: 4,
-    include: {
-      category: true
-    }
+    include: postCardInclude
   });
 });
 
-export const getPublishedPosts = cache(async () => {
-  return prisma.post.findMany({
-    where: { status: "PUBLISHED" },
+export const getPublishedPosts = cache(async (page = 1, pageSize = POSTS_PER_PAGE) => {
+  const safePage = Math.max(page, 1);
+  const where = { status: "PUBLISHED" as const };
+  const totalCount = await prisma.post.count({ where });
+  const totalPages = Math.max(1, Math.ceil(totalCount / pageSize));
+  const currentPage = Math.min(safePage, totalPages);
+  const skip = (currentPage - 1) * pageSize;
+  const posts = await prisma.post.findMany({
+    where,
     orderBy: [{ publishedAt: "desc" }],
-    include: {
-      category: true
-    }
+    skip,
+    take: pageSize,
+    include: postCardInclude
   });
+
+  return {
+    posts,
+    totalCount,
+    page: currentPage,
+    totalPages
+  };
 });
 
 export const getPostBySlug = cache(async (slug: string) => {
@@ -66,16 +83,52 @@ export const getPostBySlug = cache(async (slug: string) => {
   });
 });
 
-export const getPostsByCategory = cache(async (slug: string) => {
+export const getCategoryPageData = cache(async (slug: string, page = 1, pageSize = POSTS_PER_PAGE) => {
+  const safePage = Math.max(page, 1);
+
   const category = await prisma.category.findUnique({
-    where: { slug },
-    include: {
-      posts: {
-        where: { status: "PUBLISHED" },
-        orderBy: [{ publishedAt: "desc" }]
-      }
-    }
+    where: { slug }
   });
 
-  return category;
+  if (!category) {
+    return null;
+  }
+
+  const featuredPost = await prisma.post.findFirst({
+    where: { status: "PUBLISHED", categoryId: category.id },
+    orderBy: [{ featured: "desc" }, { publishedAt: "desc" }],
+    include: postCardInclude
+  });
+
+  const where = {
+    status: "PUBLISHED" as const,
+    categoryId: category.id,
+    ...(featuredPost ? { id: { not: featuredPost.id } } : {})
+  };
+
+  const totalCount = await prisma.post.count({
+    where: { status: "PUBLISHED", categoryId: category.id }
+  });
+
+  const remainingCount = featuredPost ? Math.max(totalCount - 1, 0) : totalCount;
+  const totalPages = Math.max(1, Math.ceil(remainingCount / pageSize));
+  const currentPage = Math.min(safePage, totalPages);
+  const skip = (currentPage - 1) * pageSize;
+
+  const posts = await prisma.post.findMany({
+    where,
+    orderBy: [{ publishedAt: "desc" }],
+    skip,
+    take: pageSize,
+    include: postCardInclude
+  });
+
+  return {
+    category,
+    featuredPost,
+    posts,
+    totalCount,
+    page: currentPage,
+    totalPages
+  };
 });

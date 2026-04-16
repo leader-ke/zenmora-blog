@@ -18,7 +18,10 @@ export async function SiteHeader() {
         <div className="top-nav__links top-nav__links--end">
           <Link href="/blog">Shop</Link>
           <Link href="/contact">Contact</Link>
-          <Link href="/admin/login">Admin</Link>
+          <div className="top-nav__socials" aria-label="Social links">
+            <span>◎</span>
+            <span>◌</span>
+          </div>
         </div>
       </nav>
       <div className="sub-nav">

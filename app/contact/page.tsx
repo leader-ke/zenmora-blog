@@ -1,5 +1,11 @@
+import type { Metadata } from "next";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
+
+export const metadata: Metadata = {
+  title: "Contact",
+  description: "Get in touch with Zenmora Co. for collaborations, editorial questions, and project inquiries."
+};
 
 export default function ContactPage() {
   return (
