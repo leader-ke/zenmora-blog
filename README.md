@@ -8,6 +8,8 @@ Editorial home decor blog built with Next.js, Prisma, and PostgreSQL.
 - Prisma + PostgreSQL
 - Server actions for admin publishing and newsletter signup
 - Local password-protected admin area
+- Shop items management
+- Newsletter subscriber management
 
 ## Local setup
 
@@ -46,8 +48,9 @@ Recommended production setup:
 
 For Neon:
 
-- `DATABASE_URL` should use the pooled connection string for the app runtime
-- `DIRECT_URL` should use the direct non-pooled connection string for Prisma migrations
+- `DATABASE_URL` should use the pooled connection string (contains `-pooler` in the hostname) for app runtime queries
+- `DIRECT_URL` should use the direct non-pooled connection string (no `-pooler`) for Prisma migrations
+- Set `PRISMA_MIGRATE_SKIP_ADVISORY_LOCK=1` to avoid advisory lock timeouts caused by Neon cold starts during builds
 
 After updating environment variables on Vercel, trigger a new deployment so Prisma can read the new values during build.
 
@@ -57,6 +60,8 @@ After updating environment variables on Vercel, trigger a new deployment so Pris
 - Sign in with `ADMIN_PASSWORD`
 - Edit homepage content, categories, and posts
 - Set post status to `PUBLISHED` to make content live
+- Manage shop items (name, price, retailer, image, sort order)
+- View and delete newsletter subscribers
 
 ## Git / personal account
 
