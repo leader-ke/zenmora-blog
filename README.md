@@ -42,7 +42,12 @@ Recommended production setup:
 
 - Host the app on Vercel
 - Use managed PostgreSQL such as Neon or Supabase
-- Set `DATABASE_URL`, `ADMIN_PASSWORD`, `SESSION_SECRET`, and the Umami variables in Vercel project settings
+- Set `DATABASE_URL`, `DIRECT_URL`, `ADMIN_PASSWORD`, `SESSION_SECRET`, and the Umami variables in Vercel project settings
+
+For Neon:
+
+- `DATABASE_URL` should use the pooled connection string for the app runtime
+- `DIRECT_URL` should use the direct non-pooled connection string for Prisma migrations
 
 After updating environment variables on Vercel, trigger a new deployment so Prisma can read the new values during build.
 
