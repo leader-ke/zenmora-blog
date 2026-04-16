@@ -24,9 +24,11 @@ export default async function AdminLoginPage({
             Sign in
           </button>
         </form>
-        <Link href="/" className="secondary-button">
-          Back to site
-        </Link>
+        <div className="login-actions">
+          <Link href="/" className="secondary-button">
+            Back to site
+          </Link>
+        </div>
       </div>
     </main>
   );
