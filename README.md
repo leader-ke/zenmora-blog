@@ -1,11 +1,11 @@
 # Zenmora Co.
 
-Editorial home decor blog built with Next.js, Prisma, and SQLite.
+Editorial home decor blog built with Next.js, Prisma, and PostgreSQL.
 
 ## Stack
 
 - Next.js App Router
-- Prisma + SQLite
+- Prisma + PostgreSQL
 - Server actions for admin publishing and newsletter signup
 - Local password-protected admin area
 
@@ -13,10 +13,11 @@ Editorial home decor blog built with Next.js, Prisma, and SQLite.
 
 1. Copy `.env.example` to `.env`.
 2. Set `ADMIN_PASSWORD` and `SESSION_SECRET`.
-3. Install dependencies with `npm install`.
-4. Run `npx prisma migrate dev --name init`.
-5. Seed starter content with `npm run db:seed`.
-6. Start the app with `npm run dev`.
+3. Create a PostgreSQL database and set `DATABASE_URL`.
+4. Install dependencies with `npm install`.
+5. Run `npx prisma migrate dev`.
+6. Seed starter content with `npm run db:seed`.
+7. Start the app with `npm run dev`.
 
 ## Quality checks
 
@@ -34,6 +35,16 @@ Umami tracking is supported via public environment variables.
 - `NEXT_PUBLIC_UMAMI_DOMAINS`: optional comma-separated hostnames such as `zenmora.com,www.zenmora.com`
 
 If the script URL and website ID are set, the tracker is injected automatically through the app layout.
+
+## Deployment
+
+Recommended production setup:
+
+- Host the app on Vercel
+- Use managed PostgreSQL such as Neon or Supabase
+- Set `DATABASE_URL`, `ADMIN_PASSWORD`, `SESSION_SECRET`, and the Umami variables in Vercel project settings
+
+After updating environment variables on Vercel, trigger a new deployment so Prisma can read the new values during build.
 
 ## Admin
 
