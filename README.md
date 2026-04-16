@@ -18,6 +18,13 @@ Editorial home decor blog built with Next.js, Prisma, and SQLite.
 5. Seed starter content with `npm run db:seed`.
 6. Start the app with `npm run dev`.
 
+## Quality checks
+
+- Run `npm run lint` for ESLint.
+- Run `npm run typecheck` for TypeScript validation.
+- A Husky pre-commit hook runs `lint-staged` against staged TS/JS files.
+- GitHub Actions runs lint, typecheck, and build on pushes to `main` and on pull requests.
+
 ## Admin
 
 - Visit `/admin/login`
