@@ -49,8 +49,14 @@ export default async function AdminShopPage() {
           <div className="input-row">
             <label>
               Image path
-              <input name="image" defaultValue="/images/shop-lamp.svg" required />
+              <input name="image" defaultValue="/images/shop-lamp.svg" />
             </label>
+            <label>
+              Image upload
+              <input type="file" name="imageFile" accept="image/*" />
+            </label>
+          </div>
+          <div className="input-row">
             <label>
               Image alt
               <input name="imageAlt" defaultValue="Decor product" required />

@@ -15,6 +15,12 @@ const config = [
   }),
   {
     ignores: [".next/**", "next-env.d.ts", "node_modules/**", "prisma/dev.db", "prisma/dev.db-journal"]
+  },
+  {
+    files: ["tests/**/*.ts"],
+    rules: {
+      "@typescript-eslint/no-explicit-any": "off"
+    }
   }
 ];
 

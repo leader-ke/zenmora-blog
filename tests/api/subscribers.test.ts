@@ -1,4 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
+import { SubscriberStatus } from "@prisma/client";
 
 vi.mock("@/lib/prisma", () => ({
   prisma: {
@@ -20,7 +21,7 @@ import { prisma } from "@/lib/prisma";
 const mockSubscriber = {
   id: "sub-1",
   email: "user@example.com",
-  status: "SUBSCRIBED",
+  status: SubscriberStatus.SUBSCRIBED,
   unsubscribeToken: "token-abc",
   subscribedAt: new Date(),
   unsubscribedAt: null,

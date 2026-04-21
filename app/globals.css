@@ -857,6 +857,10 @@ textarea {
   font-size: 1.05rem;
 }
 
+.shop-image-preview {
+  width: 120px;
+}
+
 .shop-card__body p {
   margin: 6px 0 0;
 }

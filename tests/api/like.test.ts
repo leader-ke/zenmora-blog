@@ -32,20 +32,20 @@ beforeEach(() => {
 
 describe("POST /api/posts/[slug]/like", () => {
   it("returns 404 when post does not exist", async () => {
-    vi.mocked(prisma.post.findUnique).mockResolvedValue(null);
+    vi.mocked(prisma.post.findUnique).mockResolvedValue(null as any);
     const res = await POST(makeRequest("unknown"), makeParams("unknown"));
     expect(res.status).toBe(404);
   });
 
   it("returns 404 for an unpublished post", async () => {
-    vi.mocked(prisma.post.findUnique).mockResolvedValue({ ...mockPost, status: "DRAFT" });
+    vi.mocked(prisma.post.findUnique).mockResolvedValue({ ...mockPost, status: "DRAFT" } as any);
     const res = await POST(makeRequest("draft-post"), makeParams("draft-post"));
     expect(res.status).toBe(404);
   });
 
   it("increments like count on first like", async () => {
-    vi.mocked(prisma.post.findUnique).mockResolvedValue(mockPost);
-    vi.mocked(prisma.post.update).mockResolvedValue({ likesCount: 6 });
+    vi.mocked(prisma.post.findUnique).mockResolvedValue(mockPost as any);
+    vi.mocked(prisma.post.update).mockResolvedValue({ likesCount: 6 } as any);
     const res = await POST(makeRequest("my-post"), makeParams("my-post"));
     const body = await res.json();
     expect(body.liked).toBe(true);
@@ -56,8 +56,8 @@ describe("POST /api/posts/[slug]/like", () => {
   });
 
   it("decrements like count when post is already liked (toggle off)", async () => {
-    vi.mocked(prisma.post.findUnique).mockResolvedValue(mockPost);
-    vi.mocked(prisma.post.update).mockResolvedValue({ likesCount: 4 });
+    vi.mocked(prisma.post.findUnique).mockResolvedValue(mockPost as any);
+    vi.mocked(prisma.post.update).mockResolvedValue({ likesCount: 4 } as any);
     const res = await POST(
       makeRequest("my-post", `${COOKIE_NAME}=${mockPost.id}`),
       makeParams("my-post")
@@ -71,8 +71,8 @@ describe("POST /api/posts/[slug]/like", () => {
   });
 
   it("sets the liked cookie after a first like", async () => {
-    vi.mocked(prisma.post.findUnique).mockResolvedValue(mockPost);
-    vi.mocked(prisma.post.update).mockResolvedValue({ likesCount: 6 });
+    vi.mocked(prisma.post.findUnique).mockResolvedValue(mockPost as any);
+    vi.mocked(prisma.post.update).mockResolvedValue({ likesCount: 6 } as any);
     const res = await POST(makeRequest("my-post"), makeParams("my-post"));
     const setCookie = res.headers.get("set-cookie");
     expect(setCookie).toContain(COOKIE_NAME);
@@ -80,8 +80,8 @@ describe("POST /api/posts/[slug]/like", () => {
   });
 
   it("removes post id from cookie when unliked", async () => {
-    vi.mocked(prisma.post.findUnique).mockResolvedValue(mockPost);
-    vi.mocked(prisma.post.update).mockResolvedValue({ likesCount: 4 });
+    vi.mocked(prisma.post.findUnique).mockResolvedValue(mockPost as any);
+    vi.mocked(prisma.post.update).mockResolvedValue({ likesCount: 4 } as any);
     const res = await POST(
       makeRequest("my-post", `${COOKIE_NAME}=${mockPost.id}`),
       makeParams("my-post")

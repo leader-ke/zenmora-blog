@@ -15,7 +15,9 @@ const mockComment = {
   id: "comment-1",
   name: "Alice",
   content: "Great post!",
-  createdAt: new Date("2024-01-01")
+  createdAt: new Date("2024-01-01"),
+  email: "alice@example.com",
+  postId: "post-1"
 };
 
 function makeRequest(slug: string, body: object) {
@@ -36,7 +38,7 @@ beforeEach(() => {
 
 describe("POST /api/posts/[slug]/comments", () => {
   it("returns 404 when post does not exist", async () => {
-    vi.mocked(prisma.post.findUnique).mockResolvedValue(null);
+    vi.mocked(prisma.post.findUnique).mockResolvedValue(null as any);
     const res = await POST(
       makeRequest("unknown", { name: "Alice", email: "a@b.com", content: "Hello!" }),
       makeParams("unknown")
@@ -45,7 +47,7 @@ describe("POST /api/posts/[slug]/comments", () => {
   });
 
   it("returns 404 for an unpublished post", async () => {
-    vi.mocked(prisma.post.findUnique).mockResolvedValue({ ...mockPost, status: "DRAFT" });
+    vi.mocked(prisma.post.findUnique).mockResolvedValue({ ...mockPost, status: "DRAFT" } as any);
     const res = await POST(
       makeRequest("draft", { name: "Alice", email: "a@b.com", content: "Hello!" }),
       makeParams("draft")
@@ -54,7 +56,7 @@ describe("POST /api/posts/[slug]/comments", () => {
   });
 
   it("returns 400 when name is missing", async () => {
-    vi.mocked(prisma.post.findUnique).mockResolvedValue(mockPost);
+    vi.mocked(prisma.post.findUnique).mockResolvedValue(mockPost as any);
     const res = await POST(
       makeRequest("my-post", { name: "", email: "a@b.com", content: "Hello!" }),
       makeParams("my-post")
@@ -63,7 +65,7 @@ describe("POST /api/posts/[slug]/comments", () => {
   });
 
   it("returns 400 for an invalid email", async () => {
-    vi.mocked(prisma.post.findUnique).mockResolvedValue(mockPost);
+    vi.mocked(prisma.post.findUnique).mockResolvedValue(mockPost as any);
     const res = await POST(
       makeRequest("my-post", { name: "Alice", email: "notanemail", content: "Hello!" }),
       makeParams("my-post")
@@ -72,7 +74,7 @@ describe("POST /api/posts/[slug]/comments", () => {
   });
 
   it("returns 400 when content is too short (< 3 chars)", async () => {
-    vi.mocked(prisma.post.findUnique).mockResolvedValue(mockPost);
+    vi.mocked(prisma.post.findUnique).mockResolvedValue(mockPost as any);
     const res = await POST(
       makeRequest("my-post", { name: "Alice", email: "a@b.com", content: "Hi" }),
       makeParams("my-post")
@@ -81,8 +83,8 @@ describe("POST /api/posts/[slug]/comments", () => {
   });
 
   it("creates a comment and returns it with count", async () => {
-    vi.mocked(prisma.post.findUnique).mockResolvedValue(mockPost);
-    vi.mocked(prisma.comment.create).mockResolvedValue(mockComment);
+    vi.mocked(prisma.post.findUnique).mockResolvedValue(mockPost as any);
+    vi.mocked(prisma.comment.create).mockResolvedValue(mockComment as any);
     vi.mocked(prisma.comment.count).mockResolvedValue(3);
 
     const res = await POST(
@@ -99,8 +101,8 @@ describe("POST /api/posts/[slug]/comments", () => {
   });
 
   it("stores the email lowercased", async () => {
-    vi.mocked(prisma.post.findUnique).mockResolvedValue(mockPost);
-    vi.mocked(prisma.comment.create).mockResolvedValue(mockComment);
+    vi.mocked(prisma.post.findUnique).mockResolvedValue(mockPost as any);
+    vi.mocked(prisma.comment.create).mockResolvedValue(mockComment as any);
     vi.mocked(prisma.comment.count).mockResolvedValue(1);
 
     await POST(

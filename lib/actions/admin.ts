@@ -147,13 +147,16 @@ export async function saveShopItemAction(formData: FormData) {
   const name = getString(formData, "name");
   const slug = slugify(getString(formData, "slug") || name);
 
+  const imageFile = getFile(formData, "imageFile");
+  const uploadedImage = await saveUploadedFile(imageFile, "shop");
+
   const payload = {
     name,
     slug,
     price: getString(formData, "price"),
     href: getString(formData, "href"),
     retailer: getString(formData, "retailer") || null,
-    image: getString(formData, "image"),
+    image: uploadedImage?.relativePath || getString(formData, "image"),
     imageAlt: getString(formData, "imageAlt"),
     featured: getBoolean(formData, "featured"),
     active: getBoolean(formData, "active"),

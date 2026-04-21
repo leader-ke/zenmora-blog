@@ -50,7 +50,7 @@ describe("POST /api/contact", () => {
   });
 
   it("creates a contact message and returns ok", async () => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+     
     vi.mocked(prisma.contactMessage.create).mockResolvedValue({} as any);
     const res = await POST(makeRequest(validPayload));
     const body = await res.json();
@@ -59,7 +59,7 @@ describe("POST /api/contact", () => {
   });
 
   it("saves the correct fields to the database", async () => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+     
     vi.mocked(prisma.contactMessage.create).mockResolvedValue({} as any);
     await POST(makeRequest(validPayload));
     expect(prisma.contactMessage.create).toHaveBeenCalledWith(

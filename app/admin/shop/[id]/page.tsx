@@ -47,11 +47,22 @@ export default async function EditShopItemPage({ params }: { params: Promise<{ i
             <input name="sortOrder" type="number" defaultValue={item.sortOrder} />
           </label>
         </div>
+        {item.image ? (
+          <div className="shop-image-preview">
+            <div className="image-frame image-frame--small" style={{ backgroundImage: `url(${item.image})` }} />
+          </div>
+        ) : null}
         <div className="input-row">
           <label>
             Image path
-            <input name="image" defaultValue={item.image} required />
+            <input name="image" defaultValue={item.image} />
           </label>
+          <label>
+            Replace image
+            <input type="file" name="imageFile" accept="image/*" />
+          </label>
+        </div>
+        <div className="input-row">
           <label>
             Image alt
             <input name="imageAlt" defaultValue={item.imageAlt} required />
