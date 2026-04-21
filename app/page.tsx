@@ -1,3 +1,5 @@
+export const revalidate = 60;
+
 import type { CSSProperties } from "react";
 import Link from "next/link";
 import { NewsletterSignup } from "@/components/newsletter-signup";
