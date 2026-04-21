@@ -16,6 +16,7 @@ export async function SiteFooter() {
         <Link href="/terms">Terms</Link>
         <Link href="/admin/login">Admin</Link>
       </div>
+      <p className="footer__legal">&copy; {new Date().getFullYear()} {siteContent.siteTitle}. All rights reserved.</p>
     </footer>
   );
 }
