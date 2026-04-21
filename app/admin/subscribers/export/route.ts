@@ -11,13 +11,19 @@ export async function GET() {
     orderBy: { createdAt: "desc" },
     select: {
       email: true,
+      status: true,
+      subscribedAt: true,
+      unsubscribedAt: true,
       createdAt: true
     }
   });
 
   const csv = [
-    "email,createdAt",
-    ...subscribers.map((subscriber) => `${subscriber.email},${subscriber.createdAt.toISOString()}`)
+    "email,status,subscribedAt,unsubscribedAt,createdAt",
+    ...subscribers.map(
+      (subscriber) =>
+        `${subscriber.email},${subscriber.status},${subscriber.subscribedAt.toISOString()},${subscriber.unsubscribedAt?.toISOString() ?? ""},${subscriber.createdAt.toISOString()}`
+    )
   ].join("\n");
 
   return new NextResponse(csv, {

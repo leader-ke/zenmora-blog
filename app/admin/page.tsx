@@ -6,10 +6,13 @@ import { prisma } from "@/lib/prisma";
 export default async function AdminOverviewPage() {
   await requireAdmin();
 
-  const [postCount, draftCount, subscriberCount, latestPost] = await Promise.all([
+  const [postCount, draftCount, subscriberCount, likeAggregate, commentCount, messageCount, latestPost] = await Promise.all([
     prisma.post.count(),
     prisma.post.count({ where: { status: "DRAFT" } }),
-    prisma.subscriber.count(),
+    prisma.subscriber.count({ where: { status: "SUBSCRIBED" } }),
+    prisma.post.aggregate({ _sum: { likesCount: true } }),
+    prisma.comment.count(),
+    prisma.contactMessage.count({ where: { status: "NEW" } }),
     prisma.post.findFirst({
       where: { status: "PUBLISHED" },
       orderBy: { publishedAt: "desc" }
@@ -18,7 +21,7 @@ export default async function AdminOverviewPage() {
 
   return (
     <AdminShell title="Overview">
-      <section className="stats-grid" style={{ gridTemplateColumns: "repeat(3, minmax(0, 1fr))", marginBottom: 20 }}>
+      <section className="stats-grid" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))", marginBottom: 20 }}>
         <div className="stat-card">
           <div className="eyebrow">Posts</div>
           <h2>{postCount}</h2>
@@ -28,8 +31,20 @@ export default async function AdminOverviewPage() {
           <h2>{draftCount}</h2>
         </div>
         <div className="stat-card">
-          <div className="eyebrow">Subscribers</div>
+          <div className="eyebrow">Active subscribers</div>
           <h2>{subscriberCount}</h2>
+        </div>
+        <div className="stat-card">
+          <div className="eyebrow">Likes</div>
+          <h2>{likeAggregate._sum.likesCount ?? 0}</h2>
+        </div>
+        <div className="stat-card">
+          <div className="eyebrow">Comments</div>
+          <h2>{commentCount}</h2>
+        </div>
+        <div className="stat-card">
+          <div className="eyebrow">New messages</div>
+          <h2>{messageCount}</h2>
         </div>
       </section>
       <section className="admin-grid" style={{ gridTemplateColumns: "1.1fr 0.9fr" }}>
@@ -50,6 +65,9 @@ export default async function AdminOverviewPage() {
             </Link>
             <Link href="/admin/subscribers" className="secondary-button">
               View subscribers
+            </Link>
+            <Link href="/admin/messages" className="secondary-button">
+              Contact inbox
             </Link>
           </div>
         </div>

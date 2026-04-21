@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { AdminShell } from "@/components/admin-shell";
 import { requireAdmin } from "@/lib/auth";
-import { deletePostAction } from "@/lib/actions";
+import { deletePostAction } from "@/lib/actions/post";
 import { prisma } from "@/lib/prisma";
 import { formatDate } from "@/lib/utils";
 
@@ -10,7 +10,14 @@ export default async function AdminPostsPage() {
 
   const posts = await prisma.post.findMany({
     orderBy: [{ updatedAt: "desc" }],
-    include: { category: true }
+    include: {
+      category: true,
+      _count: {
+        select: {
+          comments: true
+        }
+      }
+    }
   });
 
   return (
@@ -33,7 +40,13 @@ export default async function AdminPostsPage() {
               </div>
             </div>
             <div>{post.featured ? "Featured" : "Standard"}</div>
-            <div>{post.latest ? "Latest grid" : "Hidden from latest"}</div>
+            <div>
+              <div>{post.latest ? "Latest grid" : "Hidden from latest"}</div>
+              <div className="admin-table__meta">
+                <span>{post.likesCount} likes</span>
+                <span>{post._count.comments} comments</span>
+              </div>
+            </div>
             <div className="admin-actions">
               <Link href={`/admin/posts/${post.id}`} className="secondary-button">
                 Edit

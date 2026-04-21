@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { logoutAction } from "@/lib/actions";
+import { logoutAction } from "@/lib/actions/auth";
 
 type AdminShellProps = {
   title: string;
@@ -11,8 +11,10 @@ const links = [
   { href: "/admin/posts", label: "Posts" },
   { href: "/admin/categories", label: "Categories" },
   { href: "/admin/homepage", label: "Homepage" },
+  { href: "/admin/contact", label: "Contact" },
   { href: "/admin/shop", label: "Shop" },
-  { href: "/admin/subscribers", label: "Subscribers" }
+  { href: "/admin/subscribers", label: "Subscribers" },
+  { href: "/admin/messages", label: "Messages" }
 ];
 
 export function AdminShell({ title, children }: AdminShellProps) {

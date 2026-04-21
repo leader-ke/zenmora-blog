@@ -1,26 +1,22 @@
 import type { CSSProperties } from "react";
 import Link from "next/link";
+import { NewsletterSignup } from "@/components/newsletter-signup";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { PostCard } from "@/components/post-card";
 import { getExploreCategories, getFeaturedPost, getLatestPosts, getShopItems, getSiteContent } from "@/lib/data";
-import { subscribeAction } from "@/lib/actions";
 
 export default async function HomePage({
-  searchParams
 }: {
   searchParams?: Promise<{ subscribed?: string }>;
 }) {
-  const [siteContent, categories, featuredPost, latestPosts, shopItems, params] = await Promise.all([
+  const [siteContent, categories, featuredPost, latestPosts, shopItems] = await Promise.all([
     getSiteContent(),
     getExploreCategories(),
     getFeaturedPost(),
     getLatestPosts(),
-    getShopItems({ take: 4, featuredOnly: true }),
-    searchParams
+    getShopItems({ take: 4, featuredOnly: true })
   ]);
-
-  const subscribed = params?.subscribed;
 
   return (
     <div className="page-shell">
@@ -132,16 +128,12 @@ export default async function HomePage({
                 <div className="eyebrow">Join Zenmora Co.</div>
                 <h2>{siteContent.newsletterTitle}</h2>
                 <p>{siteContent.newsletterBody}</p>
-                {subscribed === "1" ? <div className="status-note">{siteContent.newsletterSuccess}</div> : null}
-                {subscribed === "exists" ? <div className="status-note">That email is already subscribed.</div> : null}
-                {subscribed === "invalid" ? <div className="status-note">Enter a valid email address.</div> : null}
               </div>
-              <form action={subscribeAction}>
-                <input type="email" name="email" placeholder={siteContent.newsletterPlaceholder} required />
-                <button type="submit" className="primary-button">
-                  {siteContent.newsletterButtonLabel}
-                </button>
-              </form>
+              <NewsletterSignup
+                buttonLabel={siteContent.newsletterButtonLabel}
+                placeholder={siteContent.newsletterPlaceholder}
+                successMessage={siteContent.newsletterSuccess}
+              />
             </div>
           </div>
         </section>

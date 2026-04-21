@@ -20,22 +20,31 @@ model Category {
 }
 
 model Post {
-  id             String    @id @default(cuid())
-  title          String
-  slug           String    @unique
-  excerpt        String
-  content        String
-  status         PostStatus @default(DRAFT)
-  featured       Boolean   @default(false)
-  latest         Boolean   @default(false)
-  heroImage      String
-  heroAlt        String
-  roomSort       Int       @default(0)
-  publishedAt    DateTime?
-  categoryId     String
-  category       Category  @relation(fields: [categoryId], references: [id], onDelete: Cascade)
-  createdAt      DateTime  @default(now())
-  updatedAt      DateTime  @updatedAt
+  id              String     @id @default(cuid())
+  title           String
+  slug            String     @unique
+  excerpt         String
+  content         String
+  authorName      String?
+  tags            String?
+  metaTitle       String?
+  metaDescription String?
+  attachmentUrl   String?
+  attachmentName  String?
+  status          PostStatus @default(DRAFT)
+  featured        Boolean    @default(false)
+  latest          Boolean    @default(false)
+  heroImage       String
+  heroAlt         String
+  likesCount      Int        @default(0)
+  notifiedAt      DateTime?
+  roomSort        Int        @default(0)
+  publishedAt     DateTime?
+  categoryId      String
+  category        Category   @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  comments        Comment[]
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
 }
 
 model SiteContent {
@@ -58,15 +67,49 @@ model SiteContent {
   newsletterPlaceholder String   @default("Enter your email")
   newsletterButtonLabel String   @default("Subscribe")
   newsletterSuccess     String   @default("Thanks for subscribing.")
+  contactEyebrow        String   @default("Contact")
+  contactTitle          String   @default("Collaborations, sponsorships, and reader questions")
+  contactBody           String   @default("Use the form to reach the Zenmora Co. inbox. Messages land in the admin panel so editorial requests and partnership inquiries are not lost.")
+  contactScopeTitle     String   @default("Response scope")
+  contactScopeBody      String   @default("Brand collaborations, product features, styling consultations, reader questions, and press outreach.")
+  contactFormEyebrow    String   @default("Send a message")
+  contactFormTitle      String   @default("Contact Zenmora Co.")
+  contactSuccess        String   @default("Your message has been received.")
   footerNote            String   @default("Calm interiors, thoughtful living.")
   createdAt             DateTime @default(now())
   updatedAt             DateTime @updatedAt
 }
 
 model Subscriber {
+  id                String           @id @default(cuid())
+  email             String           @unique
+  status            SubscriberStatus @default(SUBSCRIBED)
+  unsubscribeToken  String           @unique @default(cuid())
+  subscribedAt      DateTime         @default(now())
+  unsubscribedAt    DateTime?
+  createdAt         DateTime         @default(now())
+  updatedAt         DateTime         @updatedAt
+}
+
+model Comment {
   id        String   @id @default(cuid())
-  email     String   @unique
+  name      String
+  email     String
+  content   String
+  postId    String
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
+}
+
+model ContactMessage {
+  id         String               @id @default(cuid())
+  name       String
+  email      String
+  subject    String
+  message    String
+  status     ContactMessageStatus @default(NEW)
+  createdAt  DateTime             @default(now())
+  updatedAt  DateTime             @updatedAt
 }
 
 model ShopItem {
@@ -88,4 +131,14 @@ model ShopItem {
 enum PostStatus {
   DRAFT
   PUBLISHED
+}
+
+enum SubscriberStatus {
+  SUBSCRIBED
+  UNSUBSCRIBED
+}
+
+enum ContactMessageStatus {
+  NEW
+  REVIEWED
 }

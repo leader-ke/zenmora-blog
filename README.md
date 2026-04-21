@@ -10,16 +10,22 @@ Editorial home decor blog built with Next.js, Prisma, and PostgreSQL.
 - Local password-protected admin area
 - Shop items management
 - Newsletter subscriber management
+- Contact inbox, post likes, and comments
+- Optional email delivery for subscriber confirmations and new post notifications
+- Supabase Storage-backed uploads for editor media and attachments
 
 ## Local setup
 
 1. Copy `.env.example` to `.env`.
 2. Set `ADMIN_PASSWORD` and `SESSION_SECRET`.
 3. Create a PostgreSQL database and set `DATABASE_URL`.
-4. Install dependencies with `npm install`.
-5. Run `npx prisma migrate dev`.
-6. Seed starter content with `npm run db:seed`.
-7. Start the app with `npm run dev`.
+4. Optional: set `RESEND_API_KEY` and `EMAIL_FROM` to send subscription and post notification emails.
+5. Set `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, and `SUPABASE_STORAGE_BUCKET` for production-safe uploads.
+6. Create the Supabase Storage bucket ahead of time and make it public if you want direct asset URLs.
+7. Install dependencies with `npm install`.
+8. Run `npx prisma migrate dev`.
+9. Seed starter content with `npm run db:seed`.
+10. Start the app with `npm run dev`.
 
 ## Quality checks
 
@@ -45,6 +51,8 @@ Recommended production setup:
 - Host the app on Vercel
 - Use managed PostgreSQL such as Neon or Supabase
 - Set `DATABASE_URL`, `DIRECT_URL`, `ADMIN_PASSWORD`, `SESSION_SECRET`, and the Umami variables in Vercel project settings
+- Add `RESEND_API_KEY` and `EMAIL_FROM` if you want outbound emails enabled
+- Add `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, and `SUPABASE_STORAGE_BUCKET` for uploads
 
 For Neon:
 
@@ -59,9 +67,11 @@ After updating environment variables on Vercel, trigger a new deployment so Pris
 - Visit `/admin/login`
 - Sign in with `ADMIN_PASSWORD`
 - Edit homepage content, categories, and posts
-- Set post status to `PUBLISHED` to make content live
+- Set post status to `PUBLISHED` to make content live and optionally email active subscribers
+- Upload hero images or attachments directly from the post editor
+- Upload inline images/files and hero assets through the post editor toolbar
 - Manage shop items (name, price, retailer, image, sort order)
-- View and delete newsletter subscribers
+- View subscriber status, exports, contact messages, likes, and comments
 
 ## Git / personal account
 

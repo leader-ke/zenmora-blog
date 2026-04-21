@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { AdminShell } from "@/components/admin-shell";
 import { requireAdmin } from "@/lib/auth";
-import { deleteCategoryAction, saveCategoryAction } from "@/lib/actions";
+import { deleteCategoryAction, saveCategoryAction } from "@/lib/actions/admin";
 import { prisma } from "@/lib/prisma";
 
 export default async function AdminCategoriesPage() {

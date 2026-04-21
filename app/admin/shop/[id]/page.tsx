@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import { AdminShell } from "@/components/admin-shell";
 import { requireAdmin } from "@/lib/auth";
-import { saveShopItemAction } from "@/lib/actions";
+import { saveShopItemAction } from "@/lib/actions/admin";
 import { prisma } from "@/lib/prisma";
 
 export default async function EditShopItemPage({ params }: { params: Promise<{ id: string }> }) {

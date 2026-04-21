@@ -12,20 +12,28 @@ export default async function AdminSubscribersPage() {
       orderBy: { createdAt: "desc" }
     }),
     prisma.subscriber.findFirst({
-      orderBy: { createdAt: "desc" }
+      where: { status: "SUBSCRIBED" },
+      orderBy: { subscribedAt: "desc" }
     })
   ]);
 
+  const activeCount = subscribers.filter((subscriber) => subscriber.status === "SUBSCRIBED").length;
+  const unsubscribedCount = subscribers.length - activeCount;
+
   return (
     <AdminShell title="Subscribers">
-      <section className="stats-grid" style={{ gridTemplateColumns: "repeat(2, minmax(0, 1fr))", marginBottom: 20 }}>
+      <section className="stats-grid" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", marginBottom: 20 }}>
         <div className="stat-card">
-          <div className="eyebrow">Total</div>
-          <h2>{subscribers.length}</h2>
+          <div className="eyebrow">Active</div>
+          <h2>{activeCount}</h2>
         </div>
         <div className="stat-card">
           <div className="eyebrow">Latest signup</div>
-          <h2>{latestSubscriber ? formatDate(latestSubscriber.createdAt) : "None yet"}</h2>
+          <h2>{latestSubscriber ? formatDate(latestSubscriber.subscribedAt) : "None yet"}</h2>
+        </div>
+        <div className="stat-card">
+          <div className="eyebrow">Unsubscribed</div>
+          <h2>{unsubscribedCount}</h2>
         </div>
       </section>
 
@@ -48,7 +56,9 @@ export default async function AdminSubscribersPage() {
               <div>
                 <h3>{subscriber.email}</h3>
                 <div className="admin-table__meta">
-                  <span>Joined {formatDate(subscriber.createdAt)}</span>
+                  <span>{subscriber.status}</span>
+                  <span>Joined {formatDate(subscriber.subscribedAt)}</span>
+                  {subscriber.unsubscribedAt ? <span>Left {formatDate(subscriber.unsubscribedAt)}</span> : null}
                 </div>
               </div>
               <div>

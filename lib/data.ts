@@ -4,7 +4,12 @@ import { prisma } from "@/lib/prisma";
 export const POSTS_PER_PAGE = 6;
 
 const postCardInclude = {
-  category: true
+  category: true,
+  _count: {
+    select: {
+      comments: true
+    }
+  }
 } as const;
 
 export const getSiteContent = cache(async () => {
@@ -91,7 +96,15 @@ export const getPostBySlug = cache(async (slug: string) => {
   return prisma.post.findUnique({
     where: { slug },
     include: {
-      category: true
+      category: true,
+      comments: {
+        orderBy: { createdAt: "desc" }
+      },
+      _count: {
+        select: {
+          comments: true
+        }
+      }
     }
   });
 });

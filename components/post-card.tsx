@@ -9,6 +9,10 @@ type PostCardProps = {
     heroImage: string;
     heroAlt: string;
     publishedAt: Date | null;
+    likesCount: number;
+    _count: {
+      comments: number;
+    };
     category?: {
       name: string;
       slug: string;
@@ -28,6 +32,10 @@ export function PostCard({ post }: PostCardProps) {
         <Link href={`/blog/${post.slug}`}>{post.title}</Link>
       </h3>
       <p>{post.excerpt}</p>
+      <div className="article-meta" style={{ marginTop: 14 }}>
+        <span>{post.likesCount} likes</span>
+        <span>{post._count.comments} comments</span>
+      </div>
     </article>
   );
 }

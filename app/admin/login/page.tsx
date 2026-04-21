@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { loginAction } from "@/lib/actions";
+import { loginAction } from "@/lib/actions/auth";
 
 export default async function AdminLoginPage({
   searchParams

@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import { AdminShell } from "@/components/admin-shell";
 import { requireAdmin } from "@/lib/auth";
-import { saveCategoryAction } from "@/lib/actions";
+import { saveCategoryAction } from "@/lib/actions/admin";
 import { prisma } from "@/lib/prisma";
 
 export default async function EditCategoryPage({ params }: { params: Promise<{ id: string }> }) {

@@ -11,3 +11,4 @@ tsconfig.tsbuildinfo
 .claude/
 .agents/
 skills-lock.json
+public/uploads/
