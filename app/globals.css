@@ -1301,6 +1301,10 @@ textarea {
     width: min(100vw - 20px, 1120px);
   }
 
+  .site-header {
+    position: static;
+  }
+
   .top-nav {
     grid-template-columns: 1fr;
     text-align: center;

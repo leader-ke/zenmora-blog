@@ -1,7 +1,7 @@
 export const siteConfig = {
   name: "Zenmora Co.",
   description: "Warm, minimal interior inspiration with a lightweight built-in CMS.",
-  url: "https://zenmora-blog.pages.dev"
+  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://zenmora-blog.vercel.app"
 };
 
 export function getSiteUrl(path = "") {
