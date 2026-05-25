@@ -77,6 +77,150 @@ select {
   z-index: 100;
 }
 
+/* Mobile nav bar (hidden on desktop) */
+.mobile-nav-bar {
+  display: none;
+}
+
+/* ─── Mobile nav menu ────────────────────────────────────── */
+
+.mobile-nav-toggle {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 12px;
+  cursor: pointer;
+  padding: 10px 12px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+  transition: background 160ms ease;
+}
+
+.mobile-nav-toggle span {
+  display: block;
+  width: 20px;
+  height: 2px;
+  background: var(--text);
+  border-radius: 1px;
+}
+
+.mobile-nav-toggle:hover {
+  background: rgba(255, 255, 255, 0.75);
+}
+
+.mobile-nav-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: rgba(80, 62, 52, 0.35);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  animation: fadeIn 200ms ease forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.mobile-nav-menu {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: 0 20px 28px;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.22) 0%, transparent 50%),
+    rgba(255, 252, 248, 0.88);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 12px 48px rgba(120, 96, 74, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.65);
+  border-radius: 0 0 28px 28px;
+  max-height: 88vh;
+  overflow-y: auto;
+  animation: slideDown 250ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes slideDown {
+  from { transform: translateY(-12px); opacity: 0; }
+  to   { transform: translateY(0);     opacity: 1; }
+}
+
+.mobile-nav-menu__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 0 14px;
+  border-bottom: 1px solid rgba(91, 74, 63, 0.08);
+  margin-bottom: 8px;
+}
+
+.mobile-nav-close {
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 10px;
+  cursor: pointer;
+  color: var(--text-soft);
+  font-size: 1rem;
+  padding: 8px 12px;
+  line-height: 1;
+  transition: background 160ms ease, color 160ms ease;
+}
+
+.mobile-nav-close:hover {
+  background: rgba(255, 255, 255, 0.85);
+  color: var(--text);
+}
+
+.mobile-nav-link {
+  display: block;
+  padding: 14px 0;
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  border-bottom: 1px solid rgba(91, 74, 63, 0.07);
+  color: var(--text);
+  transition: color 160ms ease, padding-left 160ms ease;
+}
+
+.mobile-nav-link:hover,
+.mobile-nav-link[aria-current="page"] {
+  color: var(--accent);
+  padding-left: 6px;
+}
+
+.mobile-nav-link--category {
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  color: var(--text-soft);
+  padding: 11px 0;
+}
+
+.mobile-nav-link--category:hover,
+.mobile-nav-link--category[aria-current="page"] {
+  color: var(--accent);
+}
+
+.mobile-nav-divider {
+  height: 1px;
+  background: rgba(91, 74, 63, 0.1);
+  margin: 12px 0 6px;
+}
+
+.mobile-nav-section-label {
+  margin: 0 0 4px;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--text-soft);
+}
+
 .top-nav,
 .sub-nav {
   background: rgba(255, 252, 247, 0.72);
@@ -1301,8 +1445,30 @@ textarea {
     width: min(100vw - 20px, 1120px);
   }
 
+  /* Show compact hamburger bar, hide full desktop nav */
+  .mobile-nav-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 0;
+  }
+
+  .top-nav,
+  .sub-nav {
+    display: none;
+  }
+
+  /* Sticky is back — now compact */
   .site-header {
-    position: static;
+    padding-top: 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(255, 252, 247, 0.82);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.45);
+    box-shadow: 0 2px 12px rgba(120, 96, 74, 0.08);
   }
 
   .top-nav {

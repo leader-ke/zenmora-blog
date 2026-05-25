@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { getCategories, getSiteContent } from "@/lib/data";
+import { MobileNav } from "@/components/mobile-nav";
 import { NavLink } from "@/components/nav-link";
 
 export async function SiteHeader() {
@@ -7,6 +8,7 @@ export async function SiteHeader() {
 
   return (
     <header className="site-shell site-header">
+      <MobileNav siteTitle={siteContent.siteTitle} categories={categories} />
       <nav className="top-nav" aria-label="Main navigation">
         <div className="top-nav__links">
           <NavLink href="/">Home</NavLink>
