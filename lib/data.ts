@@ -13,11 +13,20 @@ const postCardInclude = {
 } as const;
 
 export const getSiteContent = cache(async () => {
-  return prisma.siteContent.upsert({
-    where: { id: 1 },
-    update: {},
-    create: { id: 1 }
-  });
+  try {
+    return await prisma.siteContent.upsert({
+      where: { id: 1 },
+      update: {},
+      create: { id: 1 }
+    });
+  } catch (err) {
+    // Parallel static generation workers can race on the first INSERT.
+    // If another worker just created the row, simply read it.
+    if ((err as { code?: string }).code === "P2002") {
+      return prisma.siteContent.findUniqueOrThrow({ where: { id: 1 } });
+    }
+    throw err;
+  }
 });
 
 export const getCategories = cache(async () => {
