@@ -1,0 +1,35 @@
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: daily
+      timezone: Africa/Nairobi
+    groups:
+      security-patches:
+        applies-to: security-updates
+        patterns: ["*"]
+      production-dependencies:
+        applies-to: version-updates
+        patterns: ["*"]
+        exclude-patterns: ["@types/*", "eslint*", "prettier", "vitest", "typescript"]
+      dev-dependencies:
+        applies-to: version-updates
+        patterns: ["@types/*", "eslint*", "prettier", "vitest", "typescript"]
+        dependency-type: development
+    ignore:
+      - dependency-name: "typescript"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "next"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "react"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "react-dom"
+        update-types: ["version-update:semver-major"]
+    open-pull-requests-limit: 10
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      timezone: Africa/Nairobi

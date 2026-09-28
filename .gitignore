@@ -12,3 +12,5 @@ tsconfig.tsbuildinfo
 .agents/
 skills-lock.json
 public/uploads/
+.vercel
+.env*
